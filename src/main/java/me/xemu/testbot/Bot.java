@@ -7,6 +7,7 @@ import dev.morphia.Morphia;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.xemu.testbot.handlers.CommandServerData;
+import me.xemu.testbot.handlers.CommandStaffQuestion;
 import me.xemu.testbot.handlers.CommandUserData;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -50,10 +51,11 @@ public class Bot {
 				))
 				.build().awaitReady();
 
-		jda.addEventListener(new CommandUserData(), new CommandServerData());
+		jda.addEventListener(new CommandUserData(), new CommandServerData(), new CommandStaffQuestion());
 
 		jda.upsertCommand("userdata", "View user information.").addOption(OptionType.USER, "user", "The user to view information about.", true).queue();
 		jda.upsertCommand("serverdata", "View server information.").queue();
+		jda.upsertCommand("question", "Send us a question.").queue();
 
 		datastore = Morphia.createDatastore(
 				MongoClients.create(
